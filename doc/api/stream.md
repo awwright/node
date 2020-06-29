@@ -45,7 +45,9 @@ There are four fundamental stream types within Node.js:
   is written and read (for example, [`zlib.createDeflate()`][]).
 
 Additionally, this module includes the utility functions
-[`stream.pipeline()`][], [`stream.finished()`][] and
+[`DuplexPair`][],
+[`stream.pipeline()`][],
+[`stream.finished()`][], and
 [`stream.Readable.from()`][].
 
 ### Object mode
@@ -1507,6 +1509,25 @@ unless `emitClose` is set in false.
 
 Once `destroy()` has been called any further calls will be a noop and no
 further errors except from `_destroy` may be emitted as `'error'`.
+
+#### Class: `stream.DuplexPair`
+<!-- YAML
+added: REPLACEME
+-->
+
+The utility class `DuplexPair` returns an iterable object with two `Duplex`
+streams on properties `0` and `1`, each connected to the other side:
+
+```js
+const [ clientSide, serverSide ] = new DuplexPair();
+```
+
+Whatever is written to one stream is made readable on the other. It provides
+behavior analagous to a network connection, where the data which a client writes
+to its socket becomes readable on the server's socket.
+
+The Duplex streams are symmetrical; one or the other may be used without any
+difference in behavior.
 
 ### `stream.finished(stream[, options], callback)`
 <!-- YAML
@@ -3031,6 +3052,7 @@ contain multi-byte characters.
 [`'finish'`]: #stream_event_finish
 [`'readable'`]: #stream_event_readable
 [`Duplex`]: #stream_class_stream_duplex
+[`DuplexPair`]: #stream_class_stream_duplexpair
 [`EventEmitter`]: events.html#events_class_eventemitter
 [`Readable`]: #stream_class_stream_readable
 [`Symbol.hasInstance`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/hasInstance

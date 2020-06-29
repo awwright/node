@@ -10,8 +10,8 @@ if (!common.hasCrypto)
 
 const assert = require('assert');
 const { connect, TLSSocket } = require('tls');
-const makeDuplexPair = require('../common/duplexpair');
-const { clientSide, serverSide } = makeDuplexPair();
+const { DuplexPair } = require('stream');
+const [ clientSide, serverSide ] = new DuplexPair();
 
 const key = fixtures.readKey('agent1-key.pem');
 const cert = fixtures.readKey('agent1-cert.pem');
